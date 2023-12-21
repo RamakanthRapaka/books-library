@@ -1,76 +1,45 @@
 const asyncHandler = require("express-async-handler");
 const User = require("../models/userModel");
-//@desc Get all books
-//@route GET /api/books
+//@desc Get all users
+//@route GET /api/users
 //@access public
-const getBooks = asyncHandler(async (req, res) => {
-  const books = await Book.find();
-  res.status(200).json(books);
+const getUsers = asyncHandler(async (req, res) => {
+  const users = await User.find();
+  res.status(200).json(users);
 });
 
-//@desc Create new book
-//@route POST /api/books
+//@desc Create new user
+//@route POST /api/users
 //@access public
-const createBook = asyncHandler(async (req, res) => {
-  const { name, author, status } = req.body;
-  if (!name || !author || !status) {
+const createUser = asyncHandler(async (req, res) => {
+  const { userName, name, email, contactNumber } = req.body;
+  if (!userName || !name || !email || !contactNumber) {
     res.status(400);
     throw new Error("All fields are required!");
   }
-  const book = await Book.create({
+  const book = await User.create({
+    userName,
     name,
-    author,
-    status,
+    email,
+    contactNumber,
   });
   res.status(201).json(book);
 });
 
 //@desc Get book
-//@route GET /api/books/:id
+//@route GET /api/users/:id
 //@access public
-const getBook = asyncHandler(async (req, res) => {
-  const book = await Book.findOne({ _id: req.params.id });
-  if (!book) {
+const getUser = asyncHandler(async (req, res) => {
+  const user = await User.findOne({ _id: req.params.id });
+  if (!user) {
     res.status(404);
-    throw new Error("Book not found");
+    throw new Error("User not found");
   }
-  res.status(200).json(book);
-});
-
-//@desc Update book
-//@route PUT /api/books/:id
-//@access public
-const updateBook = asyncHandler(async (req, res) => {
-  const book = await Book.findOne({ _id: req.params.id });
-  if (!book) {
-    res.status(404);
-    throw new Error("Book is not available");
-  }
-
-  const updateBook = await Book.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-  });
-  res.status(200).json(updateBook);
-});
-
-//@desc Delete book
-//@route DELETE /api/books/:id
-//@access public
-const deleteBook = asyncHandler(async (req, res) => {
-  const book = await Book.findOne({ _id: req.params.id });
-  if (!book) {
-    res.status(404);
-    throw new Error("Book Not Found");
-  }
-  await Book.deleteOne({ _id: req.params.id });
-  res.status(200).json(book);
+  res.status(200).json(user);
 });
 
 module.exports = {
-  getBooks,
-  getBook,
-  createBook,
-  getBook,
-  updateBook,
-  deleteBook,
+  getUsers,
+  getUser,
+  createUser,
 };
