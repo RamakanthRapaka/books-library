@@ -18,6 +18,15 @@ const userSchema = mongoose.Schema(
       type: String,
       required: [true, "Please add the contact number"],
     },
+    password: {
+      type: String,
+      required: [true, "Please add the password"],
+    },
+    role: {
+      type: String,
+      required: [true, "Please add the role"],
+      enum: ["admin", "user"],
+    },
   },
   {
     timestamps: true,
